@@ -7,8 +7,8 @@ on:
             - main
 
 env:
-    GHCR_IMAGE: ghcr.io/armandwipangestu/repo-template
-    DOCKERHUB_IMAGE: devvnull/repo-template
+    GHCR_IMAGE: ghcr.io/armandwipangestu/laravel-boilerplate
+    DOCKERHUB_IMAGE: devvnull/laravel-boilerplate
 
 jobs:
     # ------------------------------------------------------

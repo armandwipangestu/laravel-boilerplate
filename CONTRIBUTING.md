@@ -23,8 +23,8 @@ Before you start, make sure you have the following installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/armandwipangestu/repo-template.git
-cd repo-template
+git clone https://github.com/armandwipangestu/laravel-boilerplate.git
+cd laravel-boilerplate
 ````
 
 ### 2. Install dependencies
@@ -158,7 +158,7 @@ When applicable:
 * **Bug reports** and **feature requests** should use the provided issue templates
 * **Questions or usage help** should go to **GitHub Discussions**
 
-[https://github.com/armandwipangestu/repo-template/discussions](https://github.com/armandwipangestu/repo-template/discussions)
+[https://github.com/armandwipangestu/laravel-boilerplate/discussions](https://github.com/armandwipangestu/laravel-boilerplate/discussions)
 
 ---
 
@@ -170,4 +170,4 @@ Please be kind and constructive — we're all here to build something great toge
 
 ---
 
-Thank you again for contributing to **repo-template**
+Thank you again for contributing to **laravel-boilerplate**

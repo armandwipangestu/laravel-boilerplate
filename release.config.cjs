@@ -3,7 +3,7 @@
  */
 
 const owner = "armandwipangestu";
-const repo = "repo-template";
+const repo = "laravel-boilerplate";
 const dockerUser = "devvnull";
 const npmScope = `@${owner}`;
 

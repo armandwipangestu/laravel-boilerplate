@@ -1,6 +1,6 @@
 FROM oven/bun:1.2.23-alpine AS base
 
-LABEL org.opencontainers.image.source="https://github.com/arman/repo-template"
+LABEL org.opencontainers.image.source="https://github.com/armandwipangestu/laravel-boilerplate"
 LABEL org.opencontainers.image.description="Agnostic repository tooling container for CI/CD, semantic-release, and automation"
 LABEL org.opencontainers.image.licenses="MIT"
 
