@@ -1,161 +1,59 @@
-# Repo Template – Automation & CI/CD Tooling
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-A reusable, agnostic repository template for modern development workflows.  
-This repository focuses on automation, CI/CD, and release management, not application code.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## What’s Inside
+## About Laravel
 
-This template comes preconfigured with:
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- GitHub Actions
-  - Pull request checks
-  - Linting workflow
-  - Automated releases
-- Semantic Release
-  - Conventional commits
-  - Automatic versioning and changelog generation
-- Dependabot
-  - Automated dependency updates
-- Issue and Pull Request Templates
-  - Bug reports
-  - Feature requests
-  - Content questions
-- Docker Support
-  - Agnostic container for CI tooling
-- Repository Hygiene
-  - CODEOWNERS
-  - Security policy
-  - Label automation
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-This repository is tooling-only and intentionally does not assume any specific framework or runtime.
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
----
+## Learning Laravel
 
-## Repo Stats
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-![Alt](https://repobeats.axiom.co/api/embed/e1583995f59c14c6cee7a5075f4bcd0e9a399580.svg "Repobeats analytics image")
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=armandwipangestu/repo-template&type=date&legend=top-left)](https://www.star-history.com/#armandwipangestu/repo-template&type=date&legend=top-left)
+## Laravel Sponsors
 
-## Contributors
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-<a href="https://github.com/armandwipangestu/repo-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=armandwipangestu/repo-template" />
-</a>
+### Premium Partners
 
----
-
-## Repository Structure
-
-```
-
-.
-├── .dockerignore          # Docker ignore rules for CI/container usage
-├── .github/
-│   ├── workflows/         # CI/CD pipelines (lint, PR checks, release)
-│   ├── ISSUE_TEMPLATE/    # Issue templates
-│   ├── CODEOWNERS         # Code ownership rules
-│   ├── dependabot.yml     # Dependency update automation
-│   ├── FUNDING.yml        # Funding and sponsorship config
-│   ├── labeler.yml        # Issue and PR label automation
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   └── SECURITY.md        # Security policy
-├── .gitignore             # Git ignore rules
-├── bun.lock               # Bun lockfile
-├── CONTRIBUTING.md        # Contribution guidelines
-├── Dockerfile             # Agnostic CI/tooling container
-├── package.json           # Tooling dependencies and scripts
-├── README.md              # Repository documentation
-└── release.config.cjs     # Semantic release configuration
-
-````
-
----
-
-## Philosophy
-
-- Framework agnostic: works for backend, frontend, library, or tooling repositories
-- Automation-first: minimize manual release and maintenance tasks
-- CI-friendly: designed to run consistently in GitHub Actions
-- Composable: use only what you need and remove the rest
-
----
-
-## Docker Usage
-
-This repository includes a Dockerfile intended for CI/CD and automation usage, not as an application runtime.
-
-### Build the image
-
-```bash
-docker build --platform linux/amd64 -f Dockerfile -t repo-template .
-````
-
----
-
-## GitHub Actions
-
-The workflows are designed to:
-
-* Validate pull requests
-* Enforce linting and commit conventions
-* Automatically release on merge to `main` and `staging` with suffix `rc` as release candidate version.
-
-No application-specific steps are included by default.
-
----
-
-## Release Management
-
-Releases are handled using semantic-release with conventional commits.
-
-Example commit messages:
-
-```txt
-feat: add new automation workflow
-fix: correct release pipeline configuration
-chore: update dependencies
-```
-
-Tags, releases, and changelogs are generated automatically.
-
----
-
-## Security
-
-Please refer to `SECURITY.md` for vulnerability reporting guidelines.
-
----
-
-## Customization Guide
-
-You can safely customize:
-
-* `.github/workflows/*` to adjust CI logic
-* `release.config.cjs` to tweak release rules
-* `package.json` to add or remove tooling
-* `Dockerfile` to adapt the runtime or package manager
-
-All other components are optional and can be removed if not needed.
-
----
-
-## License
-
-MIT License. You are free to use this template for personal or commercial projects.
-
----
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
 ## Contributing
 
-This repository is primarily intended as a starter template, but improvements and suggestions are welcome.
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
----
+## Code of Conduct
 
-## Why Use This Template
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-Use this template if you want to:
+## Security Vulnerabilities
 
-* Bootstrap repositories without recreating CI/CD pipelines
-* Enforce consistent commit and release practices
-* Focus on building features instead of infrastructure setup
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
