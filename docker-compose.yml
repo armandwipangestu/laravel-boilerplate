@@ -9,7 +9,7 @@ services:
     container_name: laravel-boilerplate
     env_file: .env
     volumes:
-      - ./storage:/var/www/storage
+      - ./docker-data/storage:/var/www/storage
     logging:
       driver: "json-file"
       options:
