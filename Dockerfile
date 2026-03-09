@@ -1,15 +1,33 @@
-FROM oven/bun:1.2.23-alpine AS base
+ARG BASE_IMAGE=php:8.4-fpm-alpine
+
+FROM ${BASE_IMAGE}
 
 LABEL org.opencontainers.image.source="https://github.com/armandwipangestu/laravel-boilerplate"
-LABEL org.opencontainers.image.description="Agnostic repository tooling container for CI/CD, semantic-release, and automation"
+LABEL org.opencontainers.image.description="Laravel Boilerplate"
 LABEL org.opencontainers.image.licenses="MIT"
 
-WORKDIR /app
+WORKDIR /var/www
 
-COPY package.json bun.lock ./
-
-RUN bun install --frozen-lockfile
-
+# copy project
 COPY . .
 
-CMD ["bun", "--version"]
+RUN mkdir -p storage bootstrap/cache
+
+# install dependencies
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
+
+# Copy entrypoint
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# permissions
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["php-fpm"]
