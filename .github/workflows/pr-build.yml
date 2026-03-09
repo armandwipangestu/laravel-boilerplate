@@ -20,6 +20,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+          extensions: pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd intl zip
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
       - name: Use Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -30,7 +40,6 @@ jobs:
         with:
           path: |
             ~/.bun/install/cache
-            node_modules
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -48,6 +57,25 @@ jobs:
         run: bun run build
         env:
           CI: true
+
+      - name: Setup Laravel Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=:memory:" >> .env
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Run Laravel tests
+        run: php artisan test --without-tty
+
+      - name: Laravel optimize (ensure config doesn't break)
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
 
       - name: Setup Node.js 25 for Semantic Release
         uses: actions/setup-node@v6
