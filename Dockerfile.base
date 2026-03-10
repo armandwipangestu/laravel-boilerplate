@@ -1,0 +1,22 @@
+FROM php:8.4-fpm-alpine
+
+LABEL org.opencontainers.image.source="https://github.com/armandwipangestu/laravel-boilerplate"
+LABEL org.opencontainers.image.description="Laravel Boilerplate"
+LABEL org.opencontainers.image.licenses="MIT"
+
+WORKDIR /var/www
+
+# Install PHP dependencies (OS Level)
+RUN apk add --no-cache \
+    bash git unzip curl libpng-dev libjpeg-turbo-dev \
+    libwebp-dev libxpm-dev freetype-dev oniguruma-dev \
+    zip libxml2-dev icu-dev mysql-client postgresql-client postgresql-dev \
+    supervisor libzip-dev
+
+# Configure & install php extension
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
+    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd intl opcache zip \
+    && rm -rf /var/cache/apk/*
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

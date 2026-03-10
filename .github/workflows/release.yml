@@ -7,8 +7,8 @@ on:
             - main
 
 env:
-    GHCR_IMAGE: ghcr.io/armandwipangestu/repo-template
-    DOCKERHUB_IMAGE: devvnull/repo-template
+    GHCR_IMAGE: ghcr.io/armandwipangestu/laravel-boilerplate
+    DOCKERHUB_IMAGE: devvnull/laravel-boilerplate
 
 jobs:
     # ------------------------------------------------------
@@ -42,6 +42,7 @@ jobs:
                   docker build \
                     --platform linux/amd64 \
                     -f Dockerfile \
+                    --build-arg BASE_IMAGE=${{ env.GHCR_IMAGE }}-base:8.4-v1 \
                     -t $GHCR_IMAGE:${{ env.SHORT_SHA }} \
                     -t $DOCKERHUB_IMAGE:${{ env.SHORT_SHA }} .
     
@@ -88,7 +89,6 @@ jobs:
               with:
                 path: |
                   ~/.bun/install/cache
-                  node_modules
                 key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
                 restore-keys: |
                   ${{ runner.os }}-bun-
