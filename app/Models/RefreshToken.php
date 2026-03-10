@@ -8,6 +8,7 @@ class RefreshToken extends Model
 {
     protected $fillable = [
         'user_id',
+        'jti',
         'token',
         'expires_at',
     ];

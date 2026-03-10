@@ -7,7 +7,6 @@ use App\Models\RefreshToken;
 use App\Repositories\Auth\Interfaces\AuthRepositoryInterface;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Support\Facades\Auth;
 
 class AuthRepository implements AuthRepositoryInterface
@@ -41,13 +40,24 @@ class AuthRepository implements AuthRepositoryInterface
         return true;
     }
 
-    public function storeRefreshToken($userId, $token, $expiresAt)
+    public function storeRefreshToken($userId, $jti, $token, $expiresAt)
     {
         return RefreshToken::create([
             'user_id' => $userId,
-            'token' => $token,
+            'jti' => $jti,
+            'token' => Hash::make($token),
             'expires_at' => $expiresAt,
         ]);
+    }
+
+    public function deleteRefreshTokenByJti($jti)
+    {
+        return RefreshToken::where('jti', $jti)->delete();
+    }
+
+    public function findRefreshTokenByJti($jti)
+    {
+        return RefreshToken::where('jti', $jti)->first();
     }
 
     public function deleteRefreshToken($token)

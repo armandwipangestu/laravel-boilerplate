@@ -6,6 +6,8 @@ use App\Repositories\Auth\Interfaces\AuthRepositoryInterface;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthService
 {
@@ -43,27 +45,45 @@ class AuthService
     public function logout($refreshToken)
     {
         if ($refreshToken) {
-            $this->authRepository->deleteRefreshToken($refreshToken);
+            try {
+                $payload = JWTAuth::getJWTProvider()
+                    ->setSecret(config('jwt.refresh_secret'))
+                    ->decode($refreshToken);
+
+                if (isset($payload['jti'])) {
+                    $this->authRepository->deleteRefreshTokenByJti($payload['jti']);
+                }
+            } catch (\Exception $e) {
+                // Silently fail if token is invalid
+            }
         }
         $this->authRepository->logout();
     }
 
     public function refresh($refreshToken)
     {
-        $storedToken = $this->authRepository->findRefreshToken($refreshToken);
-
-        if (!$storedToken || Carbon::now()->greaterThan($storedToken->expires_at)) {
-            if ($storedToken) {
-                $this->authRepository->deleteRefreshToken($refreshToken);
-            }
-            return null;
-        }
-
-        // Validate the JWT refresh token manually since it uses a different secret
         try {
             $payload = JWTAuth::getJWTProvider()
                 ->setSecret(config('jwt.refresh_secret'))
                 ->decode($refreshToken);
+
+            if (!isset($payload['jti']) || !isset($payload['sub'])) {
+                return null;
+            }
+
+            $storedToken = $this->authRepository->findRefreshTokenByJti($payload['jti']);
+
+            if (!$storedToken || Carbon::now()->greaterThan($storedToken->expires_at)) {
+                if ($storedToken) {
+                    $this->authRepository->deleteRefreshTokenByJti($payload['jti']);
+                }
+                return null;
+            }
+
+            // Verify the hashed token in database against the provided refresh token string
+            if (!Hash::check($refreshToken, $storedToken->token)) {
+                return null;
+            }
 
             $user = \App\Models\User::find($payload['sub']);
 
@@ -73,7 +93,6 @@ class AuthService
             /** @var \PHPOpenSourceSaver\JWTAuth\JWTGuard $guard */
             $guard = Auth::guard('api');
             $newToken = $guard->login($user);
-
 
             return [
                 'access_token' => $newToken,
@@ -88,11 +107,13 @@ class AuthService
     {
         $ttl = (int) config('jwt.refresh_ttl', 20160); // Default 2 weeks
         $expiresAt = Carbon::now()->addMinutes($ttl);
+        $jti = Str::uuid()->toString();
 
         $payload = [
             'sub' => $user->id,
             'iat' => Carbon::now()->timestamp,
             'exp' => $expiresAt->timestamp,
+            'jti' => $jti,
             'type' => 'refresh'
         ];
 
@@ -100,7 +121,7 @@ class AuthService
             ->setSecret(config('jwt.refresh_secret'))
             ->encode($payload);
 
-        $this->authRepository->storeRefreshToken($user->id, $token, $expiresAt);
+        $this->authRepository->storeRefreshToken($user->id, $jti, $token, $expiresAt);
 
         return $token;
     }
