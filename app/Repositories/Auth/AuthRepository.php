@@ -5,7 +5,6 @@ namespace App\Repositories\Auth;
 use App\Models\User;
 use App\Models\RefreshToken;
 use App\Repositories\Auth\Interfaces\AuthRepositoryInterface;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,18 +35,27 @@ class AuthRepository implements AuthRepositoryInterface
 
     public function refresh($refreshToken)
     {
-        // This will be handled in AuthService using the manual JWT signing for refresh token
+        // Handled in AuthService
         return true;
     }
 
-    public function storeRefreshToken($userId, $jti, $token, $expiresAt)
+    public function storeRefreshToken(array $data)
     {
         return RefreshToken::create([
-            'user_id' => $userId,
-            'jti' => $jti,
-            'token' => Hash::make($token),
-            'expires_at' => $expiresAt,
+            'user_id' => $data['user_id'],
+            'jti' => $data['jti'],
+            'token_hash' => hash('sha256', $data['token']),
+            'expires_at' => $data['expires_at'],
+            'ip_address' => $data['ip_address'] ?? null,
+            'user_agent' => $data['user_agent'] ?? null,
         ]);
+    }
+
+    public function findRefreshTokenByJti($jti)
+    {
+        return RefreshToken::where('jti', $jti)
+            ->whereNull('revoked_at')
+            ->first();
     }
 
     public function deleteRefreshTokenByJti($jti)
@@ -55,18 +63,19 @@ class AuthRepository implements AuthRepositoryInterface
         return RefreshToken::where('jti', $jti)->delete();
     }
 
-    public function findRefreshTokenByJti($jti)
+    public function revokeRefreshTokenByJti($jti)
     {
-        return RefreshToken::where('jti', $jti)->first();
+        return RefreshToken::where('jti', $jti)->update([
+            'revoked_at' => now(),
+        ]);
     }
 
-    public function deleteRefreshToken($token)
+    public function revokeAllTokensForUser($userId)
     {
-        return RefreshToken::where('token', $token)->delete();
-    }
-
-    public function findRefreshToken($token)
-    {
-        return RefreshToken::where('token', $token)->first();
+        return RefreshToken::where('user_id', $userId)
+            ->whereNull('revoked_at')
+            ->update([
+                'revoked_at' => now(),
+            ]);
     }
 }
